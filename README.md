@@ -2,7 +2,7 @@
 
 ## Ubuntu 18.04
 ### Open your terminal and run each line one by one
-```
+```yaml
 git clone https://github.com/Borovnica1/WebApp-for-learning-Fast-Typing.git
 cd WebApp-for-learning-Fast-Typing/
 npm install
