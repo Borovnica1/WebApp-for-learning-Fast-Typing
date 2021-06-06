@@ -319,7 +319,7 @@ function checkTyping() {
               body: JSON.stringify({timeTaken: `${zeroPad(minutes, 2)} : ${zeroPad(seconds, 2)}`, wpm: wpm, accuracy:acu, wrongCs:wrongChars})
             });
             const content = await rawResponse.json();
-          
+            
             console.log(content);
           })();
           // and fetch for exercise_histort table

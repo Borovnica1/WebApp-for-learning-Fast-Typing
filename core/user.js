@@ -65,15 +65,19 @@ User.prototype = {
                     exIds.push(ex.exercise_id)
                 }
                 console.log('EXERCISE IDSSSS', exIds)
-                pool.query(sql3, [exIds], function(err, result3) {
-                    console.log('WTF', result3, result3[0])
-                    if(result3.length) {
-                        console.log('HIIHIHI ', result3[0])
-                        callback(result3);
-                    } else {
-                        callback([]);
-                    }
-                });
+                if (exIds.length != 0) {
+                    pool.query(sql3, [exIds], function(err, result3) {
+                        console.log('WTF', result3, result3[0])
+                        if(result3.length) {
+                            console.log('HIIHIHI ', result3[0])
+                            callback(result3);
+                        } else {
+                            callback([]);
+                        }
+                    });
+                } else {
+                    callback([]);
+                }
                 // wait to finish 3rd query
                 
             })

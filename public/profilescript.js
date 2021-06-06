@@ -3,6 +3,7 @@ console.log('GIEFMEIOFE');
 async function getHistory() {
   const response = await fetch('/history');
   const data = await response.json();
+  console.log('YYYY',data)
   var recentData = []
   // Uzmi sa kraja 10 jer to je verovatno najnovije vezbe
   var length = data.length > 10 ? 10 : data.length;

@@ -220,9 +220,8 @@ router.post('/category', (req,res)=>{
 
 router.get('/history', (req, res, next) => {
     // make sql select *
-    user.findHistory(u.user_id, function(result) {
+    user.findHistory(req.session.user.user_id, function(result) {
         if(result) {
-            result
             res.send(result);
         }
     });
