@@ -2,11 +2,15 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const pageRouter = require('./routes/pages');
+var bodyParser = require('body-parser')
 const app = express();
 
 
 // for body parser.
-app.use(express.urlencoded( { extended : false }));
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 
 // serve static files
 app.use(express.static(path.join(__dirname, 'public')));

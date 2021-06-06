@@ -11,6 +11,38 @@ router.get('/check', (req, res) => {
     if (req.session.admin == undefined) req.session.admin = 'guest';
     res.send([req.session.admin])
 })
+router.get('/updateTypingSpeed/:typSpeed', (req, res) => {
+    console.log('HOHO', req.params.typSpeed, req.session.user.user_id)
+    let sql = `UPDATE user 
+    SET 
+        typing_speed = ?
+    WHERE
+        user_id = ?;`
+    pool.query(sql, [req.params.typSpeed, req.session.user.user_id],function(err, result) {
+        if (err) throw err;
+    });
+});
+
+router.get('/getHistoryId/:exId', (req, res) => {
+    
+    console.log('LELE', req.session.user.user_id);
+    let sql = `SELECT * FROM history WHERE user_id = ?`;
+    let sql2 = `INSERT INTO exercise_history(exercise_id, history_id) VALUES(?, ?)`;
+    let sql3 = `SELECT  exercise_history_id FROM exercise_history WHERE exercise_id = ? AND history_id = ?;`;
+    pool.query(sql, req.session.user.user_id, function(err, result) {
+        if (err) throw err;
+        console.log('LLLL', result[0].history_id)
+        pool.query(sql3, [req.params.exId, result[0].history_id], function(err, result3) {
+            if (err) throw err;
+            console.log('GONG', result3, result3.length)
+            // we should add into exercise_history
+            if (result3.length == 0) {
+                pool.query(sql2, [req.params.exId, result[0].history_id])
+            }
+        })
+        
+    })
+});
 
 router.get('/exercise/:id', (req,res)=>{
     console.log(req.params.id);
@@ -50,7 +82,19 @@ router.post('/exercise', (req,res)=>{
     });
 })
 
-
+router.put('/exercise/:id', (req,res)=>{
+    console.log('SEEEEEEsew', req.body);
+    console.log('JJJJ', req.params);
+    var sql = `UPDATE exercise SET time_taken = ?, 
+                      wpm = ?,
+                      accuracy = ?,
+                      wrong_chars = ?
+    WHERE
+        exercise_id = ?;`;
+    
+    var bind = [req.body.timeTaken, req.body.wpm, req.body.accuracy, req.body.wrongCs, req.params.id];
+    pool.query(sql, bind);
+})
 
 router.post('/exercise/:id', (req,res)=>{
     console.log(req.params.id);
