@@ -140,31 +140,7 @@ async function getCheck() {
       menu.insertAdjacentHTML('beforeend', el);
   } else {
     // tell guest that he has  to login in order to start exercise!
-    document.querySelector('.start-btn').addEventListener('click', () => {
-      var i = 2;
-      document.querySelector('.countdown').innerHTML = '3';
-      var idVar = setInterval(function () {
-        document.querySelector('.countdown').innerHTML = i;
-        i--;
-        // start timer
-        if (i == 0) startTime();
-        if (i == -1) {
-          // stop execution
-          clearInterval(idVar);
-          document.querySelector('.countdown').innerHTML = 'GO!';
-          document.querySelector('.type-input').setAttribute('maxlength', 90);
-          // remove button
-          var btnPar = document.querySelector('.countdown').parentElement;
-          btnPar.removeChild(btnPar.lastElementChild);
-          // add wpm and accuracy
-          document.querySelector('.countdown').parentElement.insertAdjacentHTML('beforeend', `<h1 class="display-6 p-2 text-center wpm">WPM: </h1>`)
-          document.querySelector('.countdown').parentElement.insertAdjacentHTML('beforeend', `<h3 class="display-8 p-2 text-center accuracy">Accuracy: </h3>`)
-
-          checkTyping()
-        }
-      }, 1000);
-    })
-    /* let html = `
+    let html = `
     <h1 class="display-6 p-2 text-center starting">You have to be logged in to start exercise!</h1>
     <div class="d-flex align-items-center" style="justify-content:center">
     <a href="login.html" type="button" class="btn btn-link px-3 me-2">
@@ -175,7 +151,7 @@ async function getCheck() {
     </a>
 
   </div>`;
-    document.querySelector('.start-btn').parentElement.innerHTML = html; */
+    document.querySelector('.start-btn').parentElement.innerHTML = html;
       var el = `<div class="d-flex align-items-center">
     <a href="login.html" type="button" class="btn btn-link px-3 me-2">
       Login
@@ -273,7 +249,6 @@ function checkTyping() {
         if (i == wordsLength-1 && j == exerciseWords[i].length-1) {
           console.log('ENDD');
           // sort wrong chars and take only first five
-          
           var sortable = [];
           for (var vehicle in wrongChars) {
               sortable.push([vehicle, wrongChars[vehicle]]);
@@ -286,9 +261,13 @@ function checkTyping() {
           wrongChars = '';
           for (var k = 0; k < n; k++) wrongChars += ` ${sortable[k][0]}-${sortable[k][1]} `;
           wrongChars.trim();
+          if (sortable.length == 0) wrongChars = 'none'
           input.setAttribute('maxlength', 0);
           input.value = '';
           clearInterval(timeId);
+          
+          wpm = wpm == 'NaN' ? 0 : wpm;
+          acu = acu == 'NaN' ? 0 : acu
           var el = `<div style="height:100vh;width:100%; background-color:rgba(218, 223, 225, .5);
           position:absolute;top:0;left:0;display:flex;justify-content:center
           ;align-items:center">
@@ -296,8 +275,8 @@ function checkTyping() {
               <h3 class="card-title text-center border-top border-start border-end pt-2">${document.querySelector('.exercise-title').textContent}</h3>
               <div class="card border">
               <h5 class="p-2 ps-4 border">Time taken: ${zeroPad(minutes, 2)} : ${zeroPad(seconds, 2)}</h5>
-              <h5 class="p-2 ps-4 border">Words per minute: ${wpm == 'NaN' ? 0 : wpm}</h5>
-              <h5 class="p-2 ps-4 border">Accuracy: ${acu == 'NaN' ? 0 : acu} %</h5>
+              <h5 class="p-2 ps-4 border">Words per minute: ${wpm}</h5>
+              <h5 class="p-2 ps-4 border">Accuracy: ${acu} %</h5>
               <h5 class="p-2 ps-4 border">Most wrong chars: ${wrongChars}</h5>
             <div class="card-body" style="display:flex;justify-content:space-around;">
                 <a href="/exercise.html?${document.querySelector('.exercise-title').getAttribute('exId')}" class="btn btn-primary">Try again</a>

@@ -138,12 +138,79 @@
     position: absolute; top: 50%; left: 20%;transform: translate(-50%,-50%);" src="img/profilepic.jpg" alt="birdie">
 </div>
 <!-- Background image --> 
+
+
+
 <div class="container">
+    <!-- Modal -->
+<div
+class="modal fade"
+id="exampleModal"
+tabindex="-1"
+aria-labelledby="exampleModalLabel"
+aria-hidden="true"
+>
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+      <button
+        type="button"
+        class="btn-close"
+        data-mdb-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form class="changePass-form" method="post" action="">
+        <!-- Password input -->
+        <div class="form-outline mb-4">
+          <input type="password" id="form4Example1" class="form-control" name="currentPassword"/>
+          <label class="form-label" for="form4Example1">Current Password</label>
+        </div>
+      
+        <!-- New Password input -->
+        <div class="form-outline mb-4">
+          <input type="password" id="form4Example2" class="form-control" required name="newPassword" />
+          <label class="form-label" for="form4Example2" >New Password</label>
+          
+        </div>
+        <!-- New Password confirm input -->
+        <div class="form-outline mb-4">
+          <input type="password" id="form4Example2" class="form-control" required name="newPasswordConfirm" />
+          <label class="form-label" for="form4Example2" >Confirm Password</label>
+          
+        </div>
+      
+        <button type="submit" class="btn btn-primary btn-block mb-4 btn-submit changePassBtn" >Change Password</button>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+        Close
+      </button>
+      <!-- Submit button -->
+      
+    </div>
+  </div>
+</div>
+</div>
+<!-- Modal -->
+  
+  
   <div class="row">
     <div class="col-md-6 mt-4 border-start border-end"  style="height: fit-content;">
         <h1 class="display-6 p-2 border username">Username: chimp99</h1>
         <h1 class="display-6 p-2 border password">Password: *******</h1>
-        <button type="button" class="btn btn-light mb-3" style="font-family: 'Grandstander', cursive;"data-mdb-ripple-color="dark">Change password</button>
+        <button
+    type="button"
+    class="btn btn-light mb-3"
+    data-mdb-toggle="modal"
+    data-mdb-target="#exampleModal"
+    data-mdb-ripple-color="dark"
+  >
+  Change password
+  </button>
         <h1 class="display-6 p-2 border email">Email: monk*****</h1>
         <h1 class="display-6 p-2 border typing-speed">Typing speed: average</h1>
         <h1 class="display-6 p-2 border average-wpm">Average wpm: 64</h1>

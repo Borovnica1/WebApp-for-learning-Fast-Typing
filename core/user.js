@@ -115,6 +115,40 @@ User.prototype = {
 
     },
 
+    changePass : function(body, callback)
+    {
+
+        let sql = `SELECT password_hash FROM user WHERE user_id = ?`;
+        pool.query(sql, body.user_id, function(err, result) {
+            if (err) throw err;
+            // check if password is correct
+            console.log('JKJKJKJ', body.password, result[0].password_hash)
+            if(bcrypt.compareSync(body.password, result[0].password_hash)) {
+                // change his password if newPassword is confirmed
+                if (body.newPassword != body.newPasswordConfirm) {
+                    callback();
+                    return;
+                } else {
+                    let sql2 = `UPDATE user 
+                    SET 
+                        password_hash = ?
+                    WHERE
+                        user_id = ?`;
+                        let pwd = body.newPassword;
+                        body.newPassword = bcrypt.hashSync(pwd,10);
+                        pool.query(sql2, [body.newPassword, body.user_id], function(err, result) {
+                            if (err) throw err;
+                            callback(body.newPassword);
+                            return;
+                        });
+                }
+            } else {
+                callback();
+                return
+            }
+        })
+    },
+
     login : function(username, password, callback)
     {
         // find the user data by his username.

@@ -15,7 +15,7 @@ async function getHistory() {
   console.log('HISTORYYY', recentData)
   renderHistory(recentData);
 }
-function renderHistory(d) {
+async function renderHistory(d) {
   var hist = document.querySelector('.history');
   var avgWpm = 0;
   console.log('IDEMOOO ', d.length)
@@ -42,18 +42,18 @@ function renderHistory(d) {
   avgWpm /= d.length;
   document.querySelector('.average-wpm').innerHTML = 'Average wpm: ' + avgWpm.toFixed(2);
   var typSpeed;
-  if (avgWpm.toFixed(2) < 25) {
+  if (avgWpm < 25) {
     typSpeed = 'very slow'
-  } else if (avgWpm.toFixed(2) < 45) {
+  } else if (avgWpm < 45) {
     typSpeed = 'slow'
-  } else if (avgWpm.toFixed(2) < 65) {
+  } else if (avgWpm < 65) {
     typSpeed = 'normal'
-  } else if (avgWpm.toFixed(2) < 85) {
+  } else if (avgWpm < 85) {
     typSpeed = 'fast'
   } else {
     typSpeed = 'very fast'
   }
-  fetch('/updateTypingSpeed/'+typSpeed);
+  await fetch('/updateTypingSpeed/'+typSpeed);
 }
 
 async function getUser() {
@@ -65,9 +65,11 @@ async function getUser() {
 function renderUser(d) {
   
   document.querySelector('.username').innerHTML = 'Username: ' + d.username;
+  document.querySelector('.changePass-form').setAttribute('action', '/changePass/'+d.user_id);
   document.querySelector('.email').innerHTML = 'Email: ' + d.email;
   document.querySelector('.typing-speed').innerHTML = 'Typing speed: ' + d.typing_speed;
 }
+
 
 async function getCheck() {
   const response = await fetch('/check');

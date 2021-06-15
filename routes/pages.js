@@ -75,7 +75,7 @@ router.post('/exercise', (req,res)=>{
     var bind = [req.body.title, req.body.category, req.body.text];
     pool.query(sql, bind, function(err) {
         if (err) {
-            res.send('Something went wrong :S')
+            res.send('Something went wrong :S! Exercise with that title already exists or category with that id does not exist!')
         } else {
             res.redirect('/texts.html');
         }
@@ -273,6 +273,32 @@ router.post('/login', (req, res, next) => {
             res.redirect('/home');
         } else {
             res.send('Username/Password incorrect!');
+        }
+         
+    })
+
+});
+
+
+// post change pass
+router.post('/changePass/:id', (req, res, next) => {
+    let changeInput = {
+        user_id: req.params.id,
+        password: req.body.currentPassword,
+        newPassword: req.body.newPassword,
+        newPasswordConfirm: req.body.newPasswordConfirm,
+    };
+    console.log('LOLLL', changeInput)
+    
+    user.changePass(changeInput, function(result) {
+        if(result) {
+            console.log('MANAGED', result)
+            req.session.user.password_hash = result;
+            res.redirect('/profile.html');
+        } else {
+            console.log('MANAGED NOTTTT')
+
+            res.send('Password incorrect or newPassword incorrect!');
         }
          
     })
